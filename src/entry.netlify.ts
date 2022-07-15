@@ -1,4 +1,4 @@
-import { render } from './entry.ssr';
+import { render } from "./entry.ssr";
 
 const handler = async (request: Request) => {
   try {
@@ -9,12 +9,12 @@ const handler = async (request: Request) => {
 
     const ssrResult = await render({
       url: request.url,
-      base: '/build/',
+      base: "/build/",
     });
 
     const response = new Response(ssrResult.html, {
       headers: {
-        'Content-Type': 'text/html; charset=utf-8',
+        "Content-Type": "text/html; charset=utf-8",
       },
     });
     return response;

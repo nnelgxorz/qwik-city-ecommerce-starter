@@ -1,7 +1,7 @@
-import { component$ } from '@builder.io/qwik';
-import { useDocumentHead, useLocation } from '@builder.io/qwik-city';
+import { component$ } from "@builder.io/qwik";
+import { useDocumentHead, useLocation } from "@builder.io/qwik-city";
 
-export const SITE_NAME = "Qwik City Soup & Subs"
+export const SITE_NAME = "Qwik City Soup & Subs";
 
 export const Head = component$(
   () => {
@@ -30,5 +30,5 @@ export const Head = component$(
       </>
     );
   },
-  { tagName: 'head' }
+  { tagName: "head" }
 );

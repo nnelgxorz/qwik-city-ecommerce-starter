@@ -1,8 +1,8 @@
-import { Html } from '@builder.io/qwik-city';
-import { Head } from './components/head/head';
-import { Body } from './components/body/body';
+import { Html } from "@builder.io/qwik-city";
+import { Head } from "./components/head/head";
+import { Body } from "./components/body/body";
 
-import './global.css';
+import "./global.css";
 
 export default () => {
   return (

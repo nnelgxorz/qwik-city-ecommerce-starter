@@ -1,10 +1,10 @@
 export interface RestaurantLocation {
-  id: string
-  name: string
+  id: string;
+  name: string;
   address: {
-    street: string
-    city: string
-  }
+    street: string;
+    city: string;
+  };
 }
 
 const createLocation = (name: string, id: string): RestaurantLocation => {
@@ -13,13 +13,13 @@ const createLocation = (name: string, id: string): RestaurantLocation => {
     name,
     address: {
       street: `${id} Fake Street`,
-      city: name
-    }
-  }
-}
+      city: name,
+    },
+  };
+};
 
 export const LOCATIONS: RestaurantLocation[] = [
   createLocation("Partytown", "123"),
   createLocation("Qwik City", "456"),
-  createLocation("Proxytown", "789")
-]
+  createLocation("Proxytown", "789"),
+];

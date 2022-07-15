@@ -1,9 +1,7 @@
-import { Async, component$, Host } from '@builder.io/qwik';
-import { EndpointHandler, useEndpoint } from '@builder.io/qwik-city';
-import Menu from '../components/menu';
-import { MENU, FullMenu, Category } from '../data/menu';
-
-
+import { Async, component$, Host } from "@builder.io/qwik";
+import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
+import Menu from "../components/menu";
+import { MENU, FullMenu, Category } from "../data/menu";
 
 export default component$(() => {
   const menu = useEndpoint<FullMenu>();
@@ -15,7 +13,9 @@ export default component$(() => {
         <h2>Our Menu</h2>
         <Async
           resource={menu}
-          onResolved={(menu) => <Menu categories={menu.categories} items={menu.items} />}
+          onResolved={(menu) => (
+            <Menu categories={menu.categories} items={menu.items} />
+          )}
         />
       </article>
     </Host>
@@ -24,13 +24,13 @@ export default component$(() => {
 
 export const onGet: EndpointHandler<FullMenu> = () => {
   const categories = MENU.reduce((prev: Category[], { categories }) => {
-    return [...prev, ...categories]
-  }, [])
+    return [...prev, ...categories];
+  }, []);
   return {
     status: 200,
     body: {
       categories: [...new Set(categories)],
-      items: MENU
-    }
-  }
-}
+      items: MENU,
+    },
+  };
+};
