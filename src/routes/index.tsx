@@ -11,10 +11,13 @@ export default component$(() => {
     <Host>
       <h2>Welcome to Qwik City Soup &amp; Subs</h2>
       <p>The meta-framework for Qwik.</p>
-      <Async
-        resource={menu}
-        onResolved={(menu) => <Menu categories={menu.categories} items={menu.items} />}
-      />
+      <article>
+        <h2>Our Menu</h2>
+        <Async
+          resource={menu}
+          onResolved={(menu) => <Menu categories={menu.categories} items={menu.items} />}
+        />
+      </article>
     </Host>
   );
 });

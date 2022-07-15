@@ -4,6 +4,6 @@ import { MenuItem } from "../../data/menu";
 export default component$((props: { item: MenuItem }) => {
   return <Host>
     <h4>{props.item.name}</h4>
-    <a href={`/product/${props.item.id}`}>Order</a>
+    <a class="button" href={`/product/${props.item.id}`}>Order</a>
   </Host>
 }, { tagName: 'article' })

@@ -1,3 +1,12 @@
+*,
+*::before,
+*::after {
+  position: relative;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 html {
   line-height: 1.5;
   background-color: hsl(0, 0%, 95%);
@@ -13,6 +22,11 @@ html {
 
 :is(h1, h2, h3, h4) {
   line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+p:not(:last-child) {
+  margin-bottom: 1rem;
 }
 
 ul[role="list"] {
@@ -25,12 +39,23 @@ body {
   padding: 0;
   margin: 0;
   line-height: inherit;
+  height: 100%;
   min-height: 100vh;
 }
 
 #inner-body {
+  min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
+}
+
+#inner-body :is(header, footer) {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+#inner-body :is(h1) {
+  margin: 0;
 }
 
 h1>a {
@@ -39,7 +64,6 @@ h1>a {
 
 main {
   padding: 3rem 1rem;
-  height: 100%;
 }
 
 .container {
@@ -92,6 +116,8 @@ article {
   padding: 0 1.25rem;
   color: white;
   opacity: .85;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
 .nav-link:is(:hover, :focus) {
@@ -101,4 +127,20 @@ article {
 .nav-link[aria-current] {
   color: rgb(178, 119, 255);
   opacity: 1;
+}
+
+:is(button, .button) {
+  display: inline-block;
+  padding: .43rem 2rem;
+  text-decoration: none;
+  background-color: black;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-right: auto;
+  max-width: 250px;
+  text-align: center;
+  white-space: pre;
 }
