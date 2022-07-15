@@ -1,6 +1,7 @@
 import { Async, component$, Host } from "@builder.io/qwik";
 import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
 import { LOCATIONS, RestaurantLocation } from "../data/locations";
+import { setCookie } from "../utils";
 
 export const Location = component$(
   (props: { location: RestaurantLocation }) => {
@@ -11,7 +12,7 @@ export const Location = component$(
           <p>
             {props.location.address.street} {props.location.address.city}
           </p>
-          <form action="/api/select-location" method="post">
+          <form method="post">
             <input
               type="text"
               name="location"
@@ -55,3 +56,14 @@ export default component$(() => {
 export const onGet: EndpointHandler<RestaurantLocation[]> = () => {
   return { status: 200, body: LOCATIONS };
 };
+
+export const onPost: EndpointHandler = () => {
+  console.log("posting");
+  return {
+    status: 301,
+    headers: {
+      location: '/order-online',
+      ...setCookie({ key: 'qwik-city-location', value: '123' })
+    }
+  }
+}
