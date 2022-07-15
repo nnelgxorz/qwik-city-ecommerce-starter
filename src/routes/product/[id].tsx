@@ -6,7 +6,7 @@ import {
   useLocation,
 } from "@builder.io/qwik-city";
 import { MENU, MenuItem } from "../../data/menu";
-import { parseCookie } from "../../utils";
+import { getCookieValue, parseCookie } from "../../utils";
 
 export default component$(() => {
   const product = useEndpoint<MenuItem | null>();
@@ -18,7 +18,7 @@ export default component$(() => {
         onResolved={(data) => (
           <>
             <h2>{data?.name || "Not Found"}</h2>
-            <form method="post">
+            <form method="post" class="grid gap-1">
               <label>
                 <input
                   type="text"
@@ -29,11 +29,11 @@ export default component$(() => {
                   value={data?.id}
                 />
               </label>
-              <label>
+              <label class="grid">
                 Made For
                 <input type="text" name="madeFor" />
               </label>
-              <label>
+              <label class="grid">
                 Quantity
                 <input type="number" name="quantity" min={1} value={1} />
               </label>
@@ -59,11 +59,10 @@ export default component$(() => {
 });
 
 export const onGet: EndpointHandler = (ev) => {
-  const cookie = parseCookie(ev.request.headers.get("cookie"));
-  const location = cookie["qwik-city-location"];
-  if (!location) {
-    return { status: 307, headers: { location: "/locations" } };
-  }
+  // const location = getCookieValue(ev.request, "qwik-city-location");
+  // if (!location) {
+  //   return { status: 307, headers: { location: "/locations" } };
+  // }
   const { id } = ev.params;
   const product = MENU.find((item) => item.id === id);
   if (!product) {

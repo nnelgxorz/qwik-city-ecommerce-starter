@@ -2,7 +2,7 @@ import { Async, component$, Host } from "@builder.io/qwik";
 import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
 import Menu from "../components/menu";
 import { MENU, Category, FullMenu } from "../data/menu";
-import { parseCookie } from "../utils";
+import { getCookieValue, parseCookie } from "../utils";
 
 export default component$(() => {
   const menu = useEndpoint<FullMenu>();
@@ -21,8 +21,7 @@ export default component$(() => {
 });
 
 export const onGet: EndpointHandler<FullMenu> = (ev) => {
-  const cookie = parseCookie(ev.request.headers.get("cookie"));
-  const location = cookie["qwik-city-location"];
+  const location = getCookieValue(ev.request, "qwik-city-location");
   if (!location) {
     return { status: 307, headers: { location: "/locations" } };
   }
