@@ -58,12 +58,14 @@ export const onGet: EndpointHandler<RestaurantLocation[]> = () => {
 };
 
 export const onPost: EndpointHandler = () => {
-  console.log("posting");
   return {
     status: 301,
     headers: {
       location: '/order-online',
-      ...setCookie({ key: 'qwik-city-location', value: '123' })
+      ...setCookie('qwik-city-location', '123', {
+        httpOnly: true,
+        secure: true
+      })
     }
   }
 }

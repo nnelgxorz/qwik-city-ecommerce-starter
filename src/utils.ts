@@ -22,11 +22,20 @@ export const getCookieValue = (request: Request, key: string): string | null | u
   return cookie[key]
 }
 
+export interface CookieLifetime {
+  date?: Date
+  seconds?: number
+}
+export interface CookieMaxAge extends CookieLifetime {
+  seconds: number
+}
+export interface CookieExpiration extends CookieLifetime {
+  date: Date
+}
+
 interface CookieOpts {
-  key: string
-  value: string
-  expires?: Date | number
-  domain?: string
+  expires?: CookieExpiration | CookieMaxAge
+  domain?: URL | string
   secure?: boolean
   httpOnly?: boolean
   sameSite?: "Strict" | "Lax" | "Secure"
@@ -34,15 +43,14 @@ interface CookieOpts {
 
 const stringifyCookieOpts = (opts: CookieOpts) => {
   let attributes: string[] = []
-  if (opts.expires) {
-    attributes.push(
-      typeof opts.expires === 'number'
-        ? `Max-Age=${opts.expires}`
-        : `Expires=${opts.expires.toUTCString()}`
-    )
+  if (opts.expires && opts.expires.date) {
+    attributes.push(`Expires=${opts.expires.date.toUTCString()}`)
+  }
+  if (opts.expires && opts.expires.seconds) {
+    attributes.push(`Max-Age=${opts.expires}`)
   }
   if (opts.domain) {
-    attributes.push(`Domain=${opts.domain}`)
+    attributes.push(`Domain=${typeof opts.domain === 'string' ? opts.domain : opts.domain.href}`)
   }
   if (opts.secure) {
     attributes.push(`Secure`)
@@ -50,10 +58,14 @@ const stringifyCookieOpts = (opts: CookieOpts) => {
   if (opts.httpOnly) {
     attributes.push("HttpOnly")
   }
+  if (opts.sameSite) {
+    attributes.push(`SameSite=${opts.sameSite}`)
+  }
+
   return attributes
 }
 
-export const setCookie = (opts: CookieOpts) => {
+export const setCookie = (key: string, value: string, opts: CookieOpts = {}): { 'Set-Cookie': string } => {
   const attributes = stringifyCookieOpts(opts);
-  return { 'Set-Cookie': [`${opts.key}=${opts.value}`, ...attributes].join("; ") }
+  return { 'Set-Cookie': [`${key}=${value}`, ...attributes].join("; ") }
 }
