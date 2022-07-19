@@ -4,6 +4,7 @@ dist
 lib
 server
 functions/**/*.js
+.netlify
 
 # Development
 node_modules
