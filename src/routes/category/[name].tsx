@@ -1,5 +1,5 @@
 import { component$, Host, Resource } from "@builder.io/qwik";
-import { EndpointHandler, useEndpoint, useLocation } from "@builder.io/qwik-city";
+import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
 import MenuCard from "../../components/menu-card/menu-card";
 import { MENU, MenuItem } from "../../data/menu";
 
