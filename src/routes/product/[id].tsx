@@ -8,7 +8,7 @@ import {
 import { CurrentLocation } from "../../components/current-location";
 import { LOCATIONS, RestaurantLocation } from "../../data/locations";
 import { MENU, MenuItem } from "../../data/menu";
-import { getCookieValue, parseCookie } from "../../utils";
+import { getCookieValue } from "../../utils";
 
 export default component$(() => {
   const contentResource = useEndpoint<{ product: MenuItem | null, order_location: RestaurantLocation }>();
