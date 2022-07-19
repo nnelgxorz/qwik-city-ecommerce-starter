@@ -1,4 +1,4 @@
-import { Async, component$, Host } from "@builder.io/qwik";
+import { Resource, component$, Host } from "@builder.io/qwik";
 import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
 import { LOCATIONS, RestaurantLocation } from "../data/locations";
 import { setCookie } from "../utils";
@@ -38,10 +38,10 @@ export default component$(() => {
   return (
     <Host>
       <h2>Select A Location</h2>
-      <Async
+      <Resource
         resource={resource}
         onPending={() => <p>Loading...</p>}
-        onResolved={(locations) => (
+        onResolved={(locations: RestaurantLocation[]) => (
           <ul class="grid gap-1" role="list">
             {locations.map((location) => (
               <Location location={location} />

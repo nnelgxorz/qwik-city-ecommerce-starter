@@ -1,4 +1,4 @@
-import { Async, component$, Host } from "@builder.io/qwik";
+import { Resource, component$, Host } from "@builder.io/qwik";
 import {
   DocumentHead,
   EndpointHandler,
@@ -12,10 +12,10 @@ export default component$(() => {
   const product = useEndpoint<MenuItem | null>();
   return (
     <Host>
-      <Async
+      <Resource
         resource={product}
         onPending={() => <p>Loading...</p>}
-        onResolved={(data) => (
+        onResolved={(data: MenuItem | null) => (
           <>
             <h2>{data?.name || "Not Found"}</h2>
             <form method="post" class="grid gap-1">

@@ -1,4 +1,4 @@
-import { Async, component$, Host } from "@builder.io/qwik";
+import { Resource, component$, Host } from "@builder.io/qwik";
 import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
 import Menu from "../components/menu";
 import { MENU, FullMenu, Category } from "../data/menu";
@@ -11,9 +11,9 @@ export default component$(() => {
       <p>The meta-framework for Qwik.</p>
       <article>
         <h2>Our Menu</h2>
-        <Async
+        <Resource
           resource={menu}
-          onResolved={(menu) => (
+          onResolved={(menu: FullMenu) => (
             <Menu categories={menu.categories} items={menu.items} />
           )}
         />

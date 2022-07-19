@@ -17,7 +17,7 @@
     "typecheck": "tsc --incremental --noEmit"
   },
   "devDependencies": {
-    "@builder.io/qwik": "0.0.36",
+    "@builder.io/qwik": "^0.0.37",
     "@builder.io/qwik-city": "0.0.20",
     "@netlify/vite-plugin-netlify-edge": "1.1.0",
     "@types/eslint": "8.4.5",
@@ -29,7 +29,7 @@
     "node-fetch": "2.6.7",
     "prettier": "2.7.1",
     "typescript": "4.7.4",
-    "vite": "^3.0.0",
+    "vite": "^3.0.2",
     "vite-tsconfig-paths": "3.5.0"
   },
   "engines": {
