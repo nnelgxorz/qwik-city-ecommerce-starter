@@ -5,19 +5,23 @@ import {
   useEndpoint,
   useLocation,
 } from "@builder.io/qwik-city";
+import { CurrentLocation } from "../../components/current-location";
+import { LOCATIONS, RestaurantLocation } from "../../data/locations";
 import { MENU, MenuItem } from "../../data/menu";
 import { getCookieValue, parseCookie } from "../../utils";
 
 export default component$(() => {
-  const product = useEndpoint<MenuItem | null>();
+  const contentResource = useEndpoint<{ product: MenuItem | null, order_location: RestaurantLocation }>();
   return (
     <Host>
       <Resource
-        resource={product}
-        onPending={() => <p>Loading...</p>}
-        onResolved={(data: MenuItem | null) => (
+        resource={contentResource}
+        onResolved={content => (
           <>
-            <h2>{data?.name || "Not Found"}</h2>
+            <header>
+              <h2>{content.product?.name || "Not Found"}</h2>
+              <CurrentLocation current={content.order_location} />
+            </header>
             <form method="post" class="grid gap-1">
               <label>
                 <input
@@ -26,7 +30,7 @@ export default component$(() => {
                   readOnly
                   hidden
                   aria-hidden="true"
-                  value={data?.id}
+                  value={content.product?.id}
                 />
               </label>
               <label class="grid">
@@ -42,7 +46,7 @@ export default component$(() => {
             <footer>
               Categories
               <ul role="list">
-                {data?.categories.map((category) => (
+                {content.product?.categories.map((category) => (
                   <li>
                     <a href={`/category/${category.toLowerCase()}`}>
                       {category}
@@ -58,12 +62,13 @@ export default component$(() => {
   );
 });
 
-export const onGet: EndpointHandler = (ev) => {
-  const location = getCookieValue(ev.request, "qwik-city-location");
-  if (!location) {
+export const onGet: EndpointHandler = (event) => {
+  const location_id = getCookieValue(event.request, "qwik-city-location");
+  const order_location = LOCATIONS.find(({ id }) => id === location_id);
+  if (!location_id || !order_location) {
     return { status: 307, headers: { location: "/locations" } };
   }
-  const { id } = ev.params;
+  const { id } = event.params;
   const product = MENU.find((item) => item.id === id);
   if (!product) {
     return {
@@ -73,9 +78,13 @@ export const onGet: EndpointHandler = (ev) => {
   }
   return {
     status: 200,
-    body: product,
+    body: { product, order_location },
   };
 };
+
+export const onPost = () => {
+  return { status: 301, redirect: '/checkout' }
+}
 
 export const head: DocumentHead<MenuItem | null> = ({ data }) => {
   if (!data) {
