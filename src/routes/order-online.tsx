@@ -21,10 +21,10 @@ export default component$(() => {
 });
 
 export const onGet: EndpointHandler<FullMenu> = (ev) => {
-  // const location = getCookieValue(ev.request, "qwik-city-location");
-  // if (!location) {
-  //   return { status: 307, headers: { location: "/locations" } };
-  // }
+  const location = getCookieValue(ev.request, "qwik-city-location");
+  if (!location) {
+    return { status: 307, headers: { location: "/locations" } };
+  }
   const categories = MENU.reduce((prev: Category[], { categories }) => {
     return [...prev, ...categories];
   }, []);

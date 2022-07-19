@@ -57,12 +57,20 @@ export const onGet: EndpointHandler<RestaurantLocation[]> = () => {
   return { status: 200, body: LOCATIONS };
 };
 
-export const onPost: EndpointHandler = () => {
+export const onPost: EndpointHandler = async ({ request }) => {
+  const formData = await request.formData();
+  const locationID = formData.get('location')?.toString();
+  const location = LOCATIONS.find(({ id }) => id === locationID);
+  if (!locationID || !location) {
+    return {
+      status: 404
+    }
+  }
   return {
     status: 301,
     headers: {
       location: '/order-online',
-      ...setCookie('qwik-city-location', '123', {
+      ...setCookie('qwik-city-location', locationID, {
         httpOnly: true,
         secure: true
       })

@@ -59,10 +59,10 @@ export default component$(() => {
 });
 
 export const onGet: EndpointHandler = (ev) => {
-  // const location = getCookieValue(ev.request, "qwik-city-location");
-  // if (!location) {
-  //   return { status: 307, headers: { location: "/locations" } };
-  // }
+  const location = getCookieValue(ev.request, "qwik-city-location");
+  if (!location) {
+    return { status: 307, headers: { location: "/locations" } };
+  }
   const { id } = ev.params;
   const product = MENU.find((item) => item.id === id);
   if (!product) {
