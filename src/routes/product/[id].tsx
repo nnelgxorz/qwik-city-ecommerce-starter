@@ -3,7 +3,6 @@ import {
   DocumentHead,
   EndpointHandler,
   useEndpoint,
-  useLocation,
 } from "@builder.io/qwik-city";
 import { CurrentLocation } from "../../components/current-location";
 import { LOCATIONS, RestaurantLocation } from "../../data/locations";
