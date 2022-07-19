@@ -1,8 +1,11 @@
+import { RestaurantLocation } from "./locations";
+
 export type Category = "Soups" | "Subs" | "Sides";
 
 export interface FullMenu {
   categories: Category[];
   items: MenuItem[];
+  order_location: RestaurantLocation
 }
 
 export interface MenuItem {
