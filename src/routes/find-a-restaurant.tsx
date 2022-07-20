@@ -1,12 +1,11 @@
 import { Resource, component$, Host } from "@builder.io/qwik";
 import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
-import { RESTAURANT_LOCATIONS } from "../data/restaurant-locations";
-import { RESTAURANT_LOCATION_COOKIE } from "../utils";
+import { getAllLocations, RESTAURANT_LOCATION_COOKIE } from "../utils";
 import { RestaurantLocation } from "../types";
 import { setCookie } from "../utils";
 
 export interface PageContent {
-  locations: RestaurantLocation[]
+  restaurant_locations: RestaurantLocation[]
 }
 
 export const RESTAURANT_ID_FIELD = 'restaurant-location';
@@ -49,9 +48,9 @@ export default component$(() => {
       <Resource
         resource={resource}
         onPending={() => <p>Loading...</p>}
-        onResolved={({ locations }) => (
+        onResolved={({ restaurant_locations }) => (
           <ul class="grid gap-1" role="list">
-            {locations.map((location) => (
+            {restaurant_locations.map((location) => (
               <RestaurantLocationCard location={location} />
             ))}
           </ul>
@@ -61,14 +60,19 @@ export default component$(() => {
   );
 });
 
-export const onGet: EndpointHandler<PageContent> = () => {
-  return { status: 200, body: { locations: RESTAURANT_LOCATIONS } };
+export const onGet: EndpointHandler<PageContent> = async (event) => {
+  const hostname = event.url.origin;
+  const restaurant_locations = await getAllLocations(hostname);
+  return { status: 200, body: { restaurant_locations } };
 };
 
-export const onPost: EndpointHandler = async ({ request }) => {
+export const onPost: EndpointHandler = async ({ request, url }) => {
   const formData = await request.formData();
   const restaurant_id = formData.get(RESTAURANT_ID_FIELD)?.toString();
-  const restaurant = RESTAURANT_LOCATIONS.find(({ id }) => id === restaurant_id);
+  const hostname = url.origin;
+  const restaurant = await getAllLocations(hostname)
+    .then(restaurants => restaurants.find(({ id }) => id === restaurant_id))
+    ;
   if (!restaurant_id || !restaurant) {
     return {
       status: 404

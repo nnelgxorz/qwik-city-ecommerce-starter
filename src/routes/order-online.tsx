@@ -2,8 +2,7 @@ import { Resource, component$, Host } from "@builder.io/qwik";
 import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
 import { CurrentLocation } from "../components/current-location";
 import RestaurantMenu from "../components/menu";
-import { RESTARAUNT_MENU } from "../data/restaurant_menu";
-import { getCategoriesList, getUserLocation } from "../utils";
+import { getCategoriesList, getRestaurantMenu, getUserLocation } from "../utils";
 import { Category, MenuItem, RestaurantLocation } from "../types";
 
 export interface PageContent {
@@ -30,17 +29,19 @@ export default component$(() => {
   );
 });
 
-export const onGet: EndpointHandler<PageContent> = (event) => {
-  const order_location = getUserLocation(event.request);
+export const onGet: EndpointHandler<PageContent> = async (event) => {
+  const order_location = await getUserLocation(event.request);
   if (!order_location) {
     return { status: 307, redirect: "/find-a-restaurant" };
   }
-  const categories = getCategoriesList(RESTARAUNT_MENU);
+  const hostname = event.url.origin;
+  const restaurant_menu = await getRestaurantMenu(hostname);
+  const categories = getCategoriesList(restaurant_menu);
   return {
     status: 200,
     body: {
-      categories: [...new Set(categories)],
-      items: RESTARAUNT_MENU,
+      categories,
+      items: restaurant_menu,
       order_location: order_location
     },
   };
