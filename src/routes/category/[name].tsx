@@ -1,10 +1,16 @@
 import { component$, Host, Resource } from "@builder.io/qwik";
 import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
 import MenuCard from "../../components/menu-card/menu-card";
-import { MENU, MenuItem } from "../../data/menu";
+import { MENU } from "../../data/menu";
+import { MenuItem } from "../../types";
+
+export interface PageContent {
+  name: string
+  items: MenuItem[]
+}
 
 export default component$(() => {
-  const contentResource = useEndpoint<{ name: string | undefined, items: MenuItem[] }>();
+  const contentResource = useEndpoint<PageContent>();
   return <Host>
     <Resource
       resource={contentResource}
@@ -21,7 +27,7 @@ export default component$(() => {
   </Host>
 })
 
-export const onGet: EndpointHandler = (event) => {
+export const onGet: EndpointHandler<PageContent> = (event) => {
   const { name } = event.params;
   const items = MENU.filter(({ categories }) => {
     return categories.findIndex(c => c.toLowerCase() === name) >= 0

@@ -3,11 +3,18 @@ import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
 import { CurrentLocation } from "../components/current-location";
 import Menu from "../components/menu";
 import { LOCATIONS } from "../data/locations";
-import { MENU, Category, FullMenu } from "../data/menu";
+import { MENU } from "../data/menu";
+import { Category, MenuItem, RestaurantLocation } from "../types";
 import { getCookieValue } from "../utils";
 
+export interface PageContent {
+  categories: Category[]
+  items: MenuItem[]
+  order_location: RestaurantLocation
+}
+
 export default component$(() => {
-  const contentResource = useEndpoint<FullMenu>();
+  const contentResource = useEndpoint<PageContent>();
   return (
     <Host>
       <Resource
@@ -24,7 +31,7 @@ export default component$(() => {
   );
 });
 
-export const onGet: EndpointHandler<FullMenu> = (event) => {
+export const onGet: EndpointHandler<PageContent> = (event) => {
   const location_id = getCookieValue(event.request, "qwik-city-location");
   const order_location = LOCATIONS.find(({ id }) => id === location_id);
   if (!location_id || !order_location) {

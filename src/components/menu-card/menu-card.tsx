@@ -1,5 +1,5 @@
 import { component$, Host } from "@builder.io/qwik";
-import { MenuItem } from "../../data/menu";
+import { MenuItem } from "../../types";
 
 export default component$(
   (props: { item: MenuItem }) => {

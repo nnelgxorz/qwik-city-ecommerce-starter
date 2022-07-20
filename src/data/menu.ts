@@ -1,18 +1,4 @@
-import { RestaurantLocation } from "./locations";
-
-export type Category = "Soups" | "Subs" | "Sides";
-
-export interface FullMenu {
-  categories: Category[];
-  items: MenuItem[];
-  order_location: RestaurantLocation
-}
-
-export interface MenuItem {
-  id: string;
-  name: string;
-  categories: Category[];
-}
+import { MenuItem } from "../types";
 
 export const MENU: MenuItem[] = [
   {
