@@ -9,6 +9,6 @@ export const CurrentLocation = component$((props: { current: RestaurantLocation 
     <address>
       <p>{street}, {city}</p>
     </address>
-    <a href="/locations">Change Your Location</a>
+    <a href="/find-a-restaurant">Change Your Location</a>
   </aside>
 })

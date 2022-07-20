@@ -1,13 +1,13 @@
 // MIDDLEWARE
 
-import { LOCATIONS } from "./data/locations";
+import { RESTAURANT_LOCATIONS } from "./data/restaurant-locations";
 import { Category, MenuItem, RestaurantLocation } from "./types";
 
 export const RESTAURANT_LOCATION_COOKIE = 'qwik-city-location';
 
 export const getUserLocation = (request: Request): RestaurantLocation | undefined => {
-  const location_id = getCookieValue(request, RESTAURANT_LOCATION_COOKIE);
-  const order_location = LOCATIONS.find(({ id }) => id === location_id);
+  const restaurant_id = getCookieValue(request, RESTAURANT_LOCATION_COOKIE);
+  const order_location = RESTAURANT_LOCATIONS.find(({ id }) => id === restaurant_id);
   return order_location
 }
 
