@@ -1,3 +1,21 @@
+// MIDDLEWARE
+
+import { LOCATIONS } from "./data/locations";
+import { Category, MenuItem, RestaurantLocation } from "./types";
+
+export const RESTAURANT_LOCATION_COOKIE = 'qwik-city-location';
+
+export const getUserLocation = (request: Request): RestaurantLocation | undefined => {
+  const location_id = getCookieValue(request, RESTAURANT_LOCATION_COOKIE);
+  const order_location = LOCATIONS.find(({ id }) => id === location_id);
+  return order_location
+}
+
+export const getCategoriesList = (menu_items: MenuItem[]) => menu_items.reduce((prev: Category[], { categories }) => {
+  return [...prev, ...categories];
+}, []);
+
+// COOKIES
 export type Cookie = Record<string, string>;
 
 export const parseCookie = (raw: string | null | undefined): Cookie => {

@@ -3,6 +3,7 @@ import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
 import Menu from "../components/menu";
 import { MENU } from "../data/menu";
 import { Category, MenuItem } from "../types";
+import { getCategoriesList } from "../utils";
 
 export interface PageContent {
   categories: Category[]
@@ -29,9 +30,7 @@ export default component$(() => {
 });
 
 export const onGet: EndpointHandler<PageContent> = () => {
-  const categories = MENU.reduce((prev: Category[], { categories }) => {
-    return [...prev, ...categories];
-  }, []);
+  const categories = getCategoriesList(MENU);
   return {
     status: 200,
     body: {
