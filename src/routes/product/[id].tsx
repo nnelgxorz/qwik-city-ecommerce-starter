@@ -5,9 +5,15 @@ import {
   useEndpoint,
 } from "@builder.io/qwik-city";
 import { CurrentLocation } from "../../components/current-location";
-import { LOCATIONS, RestaurantLocation } from "../../data/locations";
-import { MENU, MenuItem } from "../../data/menu";
+import { LOCATIONS } from "../../data/locations";
+import { MENU } from "../../data/menu";
+import { MenuItem, RestaurantLocation } from "../../types";
 import { getCookieValue } from "../../utils";
+
+export interface PageContent {
+  product: MenuItem | null,
+  order_location: RestaurantLocation
+}
 
 export default component$(() => {
   const contentResource = useEndpoint<{ product: MenuItem | null, order_location: RestaurantLocation }>();
@@ -85,9 +91,9 @@ export const onPost = () => {
   return { status: 301, redirect: '/checkout' }
 }
 
-export const head: DocumentHead<MenuItem | null> = ({ data }) => {
-  if (!data) {
+export const head: DocumentHead<PageContent> = ({ data }) => {
+  if (!data?.product) {
     return { title: "Product Not Found" };
   }
-  return { title: data.name };
+  return { title: data.product.name };
 };

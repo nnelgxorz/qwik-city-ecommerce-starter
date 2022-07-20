@@ -1,11 +1,4 @@
-export interface RestaurantLocation {
-  id: string;
-  name: string;
-  address: {
-    street: string;
-    city: string;
-  };
-}
+import { RestaurantLocation } from "../types";
 
 const createLocation = (name: string, id: string): RestaurantLocation => {
   return {

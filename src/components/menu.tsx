@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import { Category, MenuItem } from "../data/menu";
+import { Category, MenuItem } from "../types";
 import MenuCard from "./menu-card/menu-card";
 
 export default component$(

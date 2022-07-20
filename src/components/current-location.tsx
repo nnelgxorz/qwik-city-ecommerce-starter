@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import { RestaurantLocation } from "../data/locations";
+import { RestaurantLocation } from "../types";
 
 export const CurrentLocation = component$((props: { current: RestaurantLocation }) => {
   const { name, address } = props.current;

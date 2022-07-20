@@ -1,7 +1,12 @@
 import { Resource, component$, Host } from "@builder.io/qwik";
 import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
-import { LOCATIONS, RestaurantLocation } from "../data/locations";
+import { LOCATIONS } from "../data/locations";
+import { RestaurantLocation } from "../types";
 import { setCookie } from "../utils";
+
+export interface PageContent {
+  locations: RestaurantLocation[]
+}
 
 export const Location = component$(
   (props: { location: RestaurantLocation }) => {
@@ -34,14 +39,14 @@ export const Location = component$(
 );
 
 export default component$(() => {
-  const resource = useEndpoint<RestaurantLocation[]>();
+  const resource = useEndpoint<PageContent>();
   return (
     <Host>
       <h2>Select A Location</h2>
       <Resource
         resource={resource}
         onPending={() => <p>Loading...</p>}
-        onResolved={(locations: RestaurantLocation[]) => (
+        onResolved={({ locations }) => (
           <ul class="grid gap-1" role="list">
             {locations.map((location) => (
               <Location location={location} />

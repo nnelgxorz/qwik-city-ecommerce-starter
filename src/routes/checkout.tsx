@@ -1,11 +1,16 @@
 import { component$, Host, Resource } from "@builder.io/qwik";
 import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
 import { CurrentLocation } from "../components/current-location";
-import { LOCATIONS, RestaurantLocation } from "../data/locations";
+import { LOCATIONS } from "../data/locations";
+import { RestaurantLocation } from "../types";
 import { getCookieValue } from "../utils";
 
+export interface PageContent {
+  order_location: RestaurantLocation
+}
+
 export default component$(() => {
-  const contentResource = useEndpoint<{ order_location: RestaurantLocation }>();
+  const contentResource = useEndpoint<PageContent>();
   return (
     <Host>
       <Resource
@@ -54,7 +59,7 @@ export default component$(() => {
   );
 });
 
-export const onGet: EndpointHandler = (event) => {
+export const onGet: EndpointHandler<PageContent> = (event) => {
   const location_id = getCookieValue(event.request, 'qwik-city-location');
   const order_location = LOCATIONS.find(({ id }) => id === location_id);
   if (!location_id || !order_location) {
