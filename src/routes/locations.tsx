@@ -1,6 +1,7 @@
 import { Resource, component$, Host } from "@builder.io/qwik";
 import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
 import { LOCATIONS } from "../data/locations";
+import { RESTAURANT_LOCATION_COOKIE } from "../utils";
 import { RestaurantLocation } from "../types";
 import { setCookie } from "../utils";
 
@@ -20,7 +21,7 @@ export const Location = component$(
           <form method="post">
             <input
               type="text"
-              name="location"
+              name="restaurant-location"
               hidden
               aria-hidden="true"
               readOnly
@@ -64,7 +65,7 @@ export const onGet: EndpointHandler<RestaurantLocation[]> = () => {
 
 export const onPost: EndpointHandler = async ({ request }) => {
   const formData = await request.formData();
-  const locationID = formData.get('location')?.toString();
+  const locationID = formData.get('restaurant-location')?.toString();
   const location = LOCATIONS.find(({ id }) => id === locationID);
   if (!locationID || !location) {
     return {
@@ -73,9 +74,9 @@ export const onPost: EndpointHandler = async ({ request }) => {
   }
   return {
     status: 301,
+    redirect: '/order-online',
     headers: {
-      location: '/order-online',
-      ...setCookie('qwik-city-location', locationID, {
+      ...setCookie(RESTAURANT_LOCATION_COOKIE, locationID, {
         httpOnly: true,
         secure: true
       })

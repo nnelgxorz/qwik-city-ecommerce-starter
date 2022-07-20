@@ -1,9 +1,8 @@
 import { component$, Host, Resource } from "@builder.io/qwik";
 import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
 import { CurrentLocation } from "../components/current-location";
-import { LOCATIONS } from "../data/locations";
+import { getUserLocation } from "../utils";
 import { RestaurantLocation } from "../types";
-import { getCookieValue } from "../utils";
 
 export interface PageContent {
   order_location: RestaurantLocation
@@ -60,9 +59,8 @@ export default component$(() => {
 });
 
 export const onGet: EndpointHandler<PageContent> = (event) => {
-  const location_id = getCookieValue(event.request, 'qwik-city-location');
-  const order_location = LOCATIONS.find(({ id }) => id === location_id);
-  if (!location_id || !order_location) {
+  const order_location = getUserLocation(event.request);
+  if (!order_location) {
     return { status: 301, redirect: '/locations' }
   }
   return {
