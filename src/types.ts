@@ -19,3 +19,12 @@ export interface MenuItem {
   name: string;
   categories: Category[];
 }
+
+export interface OrderLineItem {
+  id: string
+  name: string
+  price: number
+  quantity: number
+  made_for?: string
+  url: string
+}
