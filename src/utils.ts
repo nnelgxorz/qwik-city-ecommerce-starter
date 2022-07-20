@@ -1,19 +1,33 @@
-// MIDDLEWARE
-
-import { RESTAURANT_LOCATIONS } from "./data/restaurant-locations";
 import { Category, MenuItem, RestaurantLocation } from "./types";
+import fetch from 'node-fetch'
+
+// MIDDLEWARE
 
 export const RESTAURANT_LOCATION_COOKIE = 'qwik-city-location';
 
-export const getUserLocation = (request: Request): RestaurantLocation | undefined => {
+export const getUserLocation = async (request: Request): Promise<RestaurantLocation | undefined> => {
+  const origin = new URL(request.url).origin;
   const restaurant_id = getCookieValue(request, RESTAURANT_LOCATION_COOKIE);
-  const order_location = RESTAURANT_LOCATIONS.find(({ id }) => id === restaurant_id);
+  const order_location = await getAllLocations(origin).then(locations => locations.find(({ id }) => id === restaurant_id));
   return order_location
 }
 
-export const getCategoriesList = (menu_items: MenuItem[]) => menu_items.reduce((prev: Category[], { categories }) => {
-  return [...prev, ...categories];
-}, []);
+export const getRestaurantMenu = async (origin: string): Promise<MenuItem[]> => {
+  return await fetch(new URL('api/restaurant-menu', origin))
+    .then(response => (response.json() as unknown) as MenuItem[]);
+}
+
+export const getAllLocations = async (origin: string): Promise<RestaurantLocation[]> => {
+  return await fetch(new URL('api/restaurant-locations', origin))
+    .then(response => (response.json() as unknown) as RestaurantLocation[]);
+}
+
+export const getCategoriesList = (menu_items: MenuItem[]) => {
+  const categories = menu_items.reduce((prev: Category[], { categories }) => {
+    return [...prev, ...categories];
+  }, [])
+  return [...new Set(categories)]
+};
 
 // COOKIES
 export type Cookie = Record<string, string>;

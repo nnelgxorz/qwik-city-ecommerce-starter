@@ -58,8 +58,8 @@ export default component$(() => {
   );
 });
 
-export const onGet: EndpointHandler<PageContent> = (event) => {
-  const order_location = getUserLocation(event.request);
+export const onGet: EndpointHandler<PageContent> = async (event) => {
+  const order_location = await getUserLocation(event.request);
   if (!order_location) {
     return { status: 301, redirect: '/find-a-restaurant' }
   }

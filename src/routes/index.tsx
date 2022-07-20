@@ -1,9 +1,8 @@
 import { Resource, component$, Host } from "@builder.io/qwik";
 import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
 import RestaurantMenu from "../components/menu";
-import { RESTARAUNT_MENU } from "../data/restaurant_menu";
 import { Category, MenuItem } from "../types";
-import { getCategoriesList } from "../utils";
+import { getCategoriesList, getRestaurantMenu } from "../utils";
 
 export interface PageContent {
   categories: Category[]
@@ -29,13 +28,15 @@ export default component$(() => {
   );
 });
 
-export const onGet: EndpointHandler<PageContent> = () => {
-  const categories = getCategoriesList(RESTARAUNT_MENU);
+export const onGet: EndpointHandler<PageContent> = async (event) => {
+  const origin = event.url.origin;
+  const restaurant_menu: MenuItem[] = await getRestaurantMenu(origin);
+  const categories = getCategoriesList(restaurant_menu);
   return {
     status: 200,
     body: {
       categories: [...new Set(categories)],
-      items: RESTARAUNT_MENU,
+      items: restaurant_menu,
     },
   };
 };

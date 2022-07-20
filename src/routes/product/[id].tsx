@@ -5,8 +5,7 @@ import {
   useEndpoint,
 } from "@builder.io/qwik-city";
 import { CurrentLocation } from "../../components/current-location";
-import { RESTARAUNT_MENU } from "../../data/restaurant_menu";
-import { getUserLocation } from "../../utils";
+import { getRestaurantMenu, getUserLocation } from "../../utils";
 import { MenuItem, RestaurantLocation } from "../../types";
 
 export interface PageContent {
@@ -66,13 +65,14 @@ export default component$(() => {
   );
 });
 
-export const onGet: EndpointHandler = (event) => {
-  const order_location = getUserLocation(event.request);
+export const onGet: EndpointHandler = async (event) => {
+  const order_location = await getUserLocation(event.request);
   if (!order_location) {
     return { status: 307, headers: { location: "/find-a-restaurant" } };
   }
   const { id } = event.params;
-  const product = RESTARAUNT_MENU.find((item) => item.id === id);
+  const origin = event.url.origin;
+  const product = await getRestaurantMenu(origin).then(restaurant_menu => restaurant_menu.find((item) => item.id === id));
   if (!product) {
     return {
       status: 404,

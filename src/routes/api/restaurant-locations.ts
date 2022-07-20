@@ -1,4 +1,5 @@
-import { RestaurantLocation } from "../types";
+import { EndpointHandler } from "@builder.io/qwik-city";
+import { RestaurantLocation } from "../../types";
 
 const createLocation = (name: string, id: string): RestaurantLocation => {
   return {
@@ -16,3 +17,11 @@ export const RESTAURANT_LOCATIONS: RestaurantLocation[] = [
   createLocation("Qwik City", "456"),
   createLocation("Proxytown", "789"),
 ];
+
+
+export const onGet: EndpointHandler<RestaurantLocation[]> = async () => {
+  return {
+    status: 200,
+    body: RESTAURANT_LOCATIONS
+  }
+}
