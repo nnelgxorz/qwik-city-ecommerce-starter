@@ -61,8 +61,8 @@ export default component$(() => {
   );
 });
 
-export const onGet: EndpointHandler<RestaurantLocation[]> = () => {
-  return { status: 200, body: RESTAURANT_LOCATIONS };
+export const onGet: EndpointHandler<PageContent> = () => {
+  return { status: 200, body: { locations: RESTAURANT_LOCATIONS } };
 };
 
 export const onPost: EndpointHandler = async ({ request }) => {
