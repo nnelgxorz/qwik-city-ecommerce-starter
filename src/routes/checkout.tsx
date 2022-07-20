@@ -2,10 +2,11 @@ import { component$, Host, Resource } from "@builder.io/qwik";
 import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
 import { CurrentLocation } from "../components/current-location";
 import { getUserLocation } from "../utils";
-import { RestaurantLocation } from "../types";
+import { OrderLineItem, RestaurantLocation } from "../types";
 
 export interface PageContent {
   order_location: RestaurantLocation
+  item_to_add?: OrderLineItem
 }
 
 export default component$(() => {
