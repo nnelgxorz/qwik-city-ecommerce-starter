@@ -1,7 +1,7 @@
 import { Resource, component$, Host } from "@builder.io/qwik";
 import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
-import Menu from "../components/menu";
-import { MENU } from "../data/menu";
+import RestaurantMenu from "../components/menu";
+import { RESTARAUNT_MENU } from "../data/restaurant_menu";
 import { Category, MenuItem } from "../types";
 import { getCategoriesList } from "../utils";
 
@@ -21,7 +21,7 @@ export default component$(() => {
         <Resource
           resource={menu}
           onResolved={(menu) => (
-            <Menu categories={menu.categories} items={menu.items} />
+            <RestaurantMenu categories={menu.categories} items={menu.items} />
           )}
         />
       </article>
@@ -30,12 +30,12 @@ export default component$(() => {
 });
 
 export const onGet: EndpointHandler<PageContent> = () => {
-  const categories = getCategoriesList(MENU);
+  const categories = getCategoriesList(RESTARAUNT_MENU);
   return {
     status: 200,
     body: {
       categories: [...new Set(categories)],
-      items: MENU,
+      items: RESTARAUNT_MENU,
     },
   };
 };

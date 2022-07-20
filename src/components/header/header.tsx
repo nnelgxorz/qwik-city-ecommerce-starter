@@ -3,7 +3,7 @@ import { useLocation } from "@builder.io/qwik-city";
 
 export const NAVIGATION = {
   "Order Online": "/order-online",
-  Locations: "/locations",
+  Locations: "/find-a-restaurant",
   "About Us": "/about-us",
 };
 

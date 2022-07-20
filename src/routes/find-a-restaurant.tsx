@@ -1,6 +1,6 @@
 import { Resource, component$, Host } from "@builder.io/qwik";
 import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
-import { LOCATIONS } from "../data/locations";
+import { RESTAURANT_LOCATIONS } from "../data/restaurant-locations";
 import { RESTAURANT_LOCATION_COOKIE } from "../utils";
 import { RestaurantLocation } from "../types";
 import { setCookie } from "../utils";
@@ -9,7 +9,9 @@ export interface PageContent {
   locations: RestaurantLocation[]
 }
 
-export const Location = component$(
+export const RESTAURANT_ID_FIELD = 'restaurant-location';
+
+export const RestaurantLocationCard = component$(
   (props: { location: RestaurantLocation }) => {
     return (
       <li>
@@ -21,7 +23,7 @@ export const Location = component$(
           <form method="post">
             <input
               type="text"
-              name="restaurant-location"
+              name={RESTAURANT_ID_FIELD}
               hidden
               aria-hidden="true"
               readOnly
@@ -50,7 +52,7 @@ export default component$(() => {
         onResolved={({ locations }) => (
           <ul class="grid gap-1" role="list">
             {locations.map((location) => (
-              <Location location={location} />
+              <RestaurantLocationCard location={location} />
             ))}
           </ul>
         )}
@@ -59,15 +61,15 @@ export default component$(() => {
   );
 });
 
-export const onGet: EndpointHandler<RestaurantLocation[]> = () => {
-  return { status: 200, body: LOCATIONS };
+export const onGet: EndpointHandler<PageContent> = () => {
+  return { status: 200, body: { locations: RESTAURANT_LOCATIONS } };
 };
 
 export const onPost: EndpointHandler = async ({ request }) => {
   const formData = await request.formData();
-  const locationID = formData.get('restaurant-location')?.toString();
-  const location = LOCATIONS.find(({ id }) => id === locationID);
-  if (!locationID || !location) {
+  const restaurant_id = formData.get(RESTAURANT_ID_FIELD)?.toString();
+  const restaurant = RESTAURANT_LOCATIONS.find(({ id }) => id === restaurant_id);
+  if (!restaurant_id || !restaurant) {
     return {
       status: 404
     }
@@ -76,7 +78,7 @@ export const onPost: EndpointHandler = async ({ request }) => {
     status: 301,
     redirect: '/order-online',
     headers: {
-      ...setCookie(RESTAURANT_LOCATION_COOKIE, locationID, {
+      ...setCookie(RESTAURANT_LOCATION_COOKIE, restaurant_id, {
         httpOnly: true,
         secure: true
       })

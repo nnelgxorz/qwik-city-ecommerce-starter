@@ -61,7 +61,7 @@ export default component$(() => {
 export const onGet: EndpointHandler<PageContent> = (event) => {
   const order_location = getUserLocation(event.request);
   if (!order_location) {
-    return { status: 301, redirect: '/locations' }
+    return { status: 301, redirect: '/find-a-restaurant' }
   }
   return {
     status: 200,

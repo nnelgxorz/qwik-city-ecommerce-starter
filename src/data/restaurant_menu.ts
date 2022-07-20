@@ -1,6 +1,6 @@
 import { MenuItem } from "../types";
 
-export const MENU: MenuItem[] = [
+export const RESTARAUNT_MENU: MenuItem[] = [
   {
     id: "1",
     name: "Steve Stew-ell",

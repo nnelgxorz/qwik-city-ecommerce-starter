@@ -1,8 +1,8 @@
 import { Resource, component$, Host } from "@builder.io/qwik";
 import { EndpointHandler, useEndpoint } from "@builder.io/qwik-city";
 import { CurrentLocation } from "../components/current-location";
-import Menu from "../components/menu";
-import { MENU } from "../data/menu";
+import RestaurantMenu from "../components/menu";
+import { RESTARAUNT_MENU } from "../data/restaurant_menu";
 import { getCategoriesList, getUserLocation } from "../utils";
 import { Category, MenuItem, RestaurantLocation } from "../types";
 
@@ -23,7 +23,7 @@ export default component$(() => {
             <h2>Our Menu</h2>
             <CurrentLocation current={order_location} />
           </header>
-          <Menu categories={categories || []} items={items || []} />
+          <RestaurantMenu categories={categories || []} items={items || []} />
         </>
         } />
     </Host>
@@ -33,14 +33,14 @@ export default component$(() => {
 export const onGet: EndpointHandler<PageContent> = (event) => {
   const order_location = getUserLocation(event.request);
   if (!order_location) {
-    return { status: 307, redirect: "/locations" };
+    return { status: 307, redirect: "/find-a-restaurant" };
   }
-  const categories = getCategoriesList(MENU);
+  const categories = getCategoriesList(RESTARAUNT_MENU);
   return {
     status: 200,
     body: {
       categories: [...new Set(categories)],
-      items: MENU,
+      items: RESTARAUNT_MENU,
       order_location: order_location
     },
   };

@@ -11,7 +11,7 @@ const createLocation = (name: string, id: string): RestaurantLocation => {
   };
 };
 
-export const LOCATIONS: RestaurantLocation[] = [
+export const RESTAURANT_LOCATIONS: RestaurantLocation[] = [
   createLocation("Partytown", "123"),
   createLocation("Qwik City", "456"),
   createLocation("Proxytown", "789"),
