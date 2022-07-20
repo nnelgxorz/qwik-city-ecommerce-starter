@@ -34,8 +34,8 @@ export const onGet: EndpointHandler<PageContent> = async (event) => {
   if (!order_location) {
     return { status: 307, redirect: "/find-a-restaurant" };
   }
-  const hostname = event.url.origin;
-  const restaurant_menu = await getRestaurantMenu(hostname);
+  const origin = event.url.origin;
+  const restaurant_menu = await getRestaurantMenu(origin);
   const categories = getCategoriesList(restaurant_menu);
   return {
     status: 200,

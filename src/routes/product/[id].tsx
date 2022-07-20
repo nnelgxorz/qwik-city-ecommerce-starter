@@ -71,8 +71,8 @@ export const onGet: EndpointHandler = async (event) => {
     return { status: 307, headers: { location: "/find-a-restaurant" } };
   }
   const { id } = event.params;
-  const hostname = event.url.origin;
-  const product = await getRestaurantMenu(hostname).then(restaurant_menu => restaurant_menu.find((item) => item.id === id));
+  const origin = event.url.origin;
+  const product = await getRestaurantMenu(origin).then(restaurant_menu => restaurant_menu.find((item) => item.id === id));
   if (!product) {
     return {
       status: 404,

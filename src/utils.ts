@@ -6,19 +6,19 @@ import fetch from 'node-fetch'
 export const RESTAURANT_LOCATION_COOKIE = 'qwik-city-location';
 
 export const getUserLocation = async (request: Request): Promise<RestaurantLocation | undefined> => {
-  const hostname = new URL(request.url).origin;
+  const origin = new URL(request.url).origin;
   const restaurant_id = getCookieValue(request, RESTAURANT_LOCATION_COOKIE);
-  const order_location = await getAllLocations(hostname).then(locations => locations.find(({ id }) => id === restaurant_id));
+  const order_location = await getAllLocations(origin).then(locations => locations.find(({ id }) => id === restaurant_id));
   return order_location
 }
 
-export const getRestaurantMenu = async (hostname: string): Promise<MenuItem[]> => {
-  return await fetch(new URL('api/restaurant-menu', hostname))
+export const getRestaurantMenu = async (origin: string): Promise<MenuItem[]> => {
+  return await fetch(new URL('api/restaurant-menu', origin))
     .then(response => (response.json() as unknown) as MenuItem[]);
 }
 
-export const getAllLocations = async (hostname: string): Promise<RestaurantLocation[]> => {
-  return await fetch(new URL('api/restaurant-locations', hostname))
+export const getAllLocations = async (origin: string): Promise<RestaurantLocation[]> => {
+  return await fetch(new URL('api/restaurant-locations', origin))
     .then(response => (response.json() as unknown) as RestaurantLocation[]);
 }
 

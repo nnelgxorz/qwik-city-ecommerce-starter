@@ -61,16 +61,16 @@ export default component$(() => {
 });
 
 export const onGet: EndpointHandler<PageContent> = async (event) => {
-  const hostname = event.url.origin;
-  const restaurant_locations = await getAllLocations(hostname);
+  const origin = event.url.origin;
+  const restaurant_locations = await getAllLocations(origin);
   return { status: 200, body: { restaurant_locations } };
 };
 
 export const onPost: EndpointHandler = async ({ request, url }) => {
   const formData = await request.formData();
   const restaurant_id = formData.get(RESTAURANT_ID_FIELD)?.toString();
-  const hostname = url.origin;
-  const restaurant = await getAllLocations(hostname)
+  const origin = url.origin;
+  const restaurant = await getAllLocations(origin)
     .then(restaurants => restaurants.find(({ id }) => id === restaurant_id))
     ;
   if (!restaurant_id || !restaurant) {

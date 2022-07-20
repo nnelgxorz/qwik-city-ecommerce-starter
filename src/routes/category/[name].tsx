@@ -29,8 +29,8 @@ export default component$(() => {
 
 export const onGet: EndpointHandler<PageContent> = async (event) => {
   const { name } = event.params;
-  const hostname = event.url.origin;
-  const items = await getRestaurantMenu(hostname)
+  const origin = event.url.origin;
+  const items = await getRestaurantMenu(origin)
     .then(restaurant_menu => restaurant_menu.filter(({ categories }) => {
       return categories.findIndex(c => c.toLowerCase() === name) >= 0
     }));
