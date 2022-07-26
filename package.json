@@ -17,7 +17,7 @@
     "typecheck": "tsc --incremental --noEmit"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^0.0.38",
+    "@builder.io/qwik": "^0.0.39",
     "@builder.io/qwik-city": "^0.0.26",
     "@netlify/vite-plugin-netlify-edge": "1.1.0",
     "@types/eslint": "8.4.5",
