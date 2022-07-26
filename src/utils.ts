@@ -1,24 +1,23 @@
 import { Category, MenuItem, RestaurantLocation } from "./types";
-import fetch from 'node-fetch'
 
 // MIDDLEWARE
 
 export const RESTAURANT_LOCATION_COOKIE = 'qwik-city-location';
 
-export const getUserLocation = async (request: Request): Promise<RestaurantLocation | undefined> => {
-  const origin = new URL(request.url).origin;
-  const restaurant_id = getCookieValue(request, RESTAURANT_LOCATION_COOKIE);
+export const getUserLocation = async (url: string, headers: Headers): Promise<RestaurantLocation | undefined> => {
+  const origin = new URL(url).origin;
+  const restaurant_id = getCookieValue(headers, RESTAURANT_LOCATION_COOKIE);
   const order_location = await getAllLocations(origin).then(locations => locations.find(({ id }) => id === restaurant_id));
   return order_location
 }
 
 export const getRestaurantMenu = async (origin: string): Promise<MenuItem[]> => {
-  return await fetch(new URL('api/restaurant-menu', origin))
+  return await fetch(new URL('api/restaurant-menu', origin).href)
     .then(response => (response.json() as unknown) as MenuItem[]);
 }
 
 export const getAllLocations = async (origin: string): Promise<RestaurantLocation[]> => {
-  return await fetch(new URL('api/restaurant-locations', origin))
+  return await fetch(new URL('api/restaurant-locations', origin).href)
     .then(response => (response.json() as unknown) as RestaurantLocation[]);
 }
 
@@ -45,12 +44,12 @@ export const parseCookie = (raw: string | null | undefined): Cookie => {
     }, {});
 };
 
-export const getCookie = (request: Request) => {
-  return parseCookie(request.headers.get("cookie"))
+export const getCookie = (headers: Headers) => {
+  return parseCookie(headers.get("cookie"))
 }
 
-export const getCookieValue = (request: Request, key: string): string | null | undefined => {
-  const cookie = getCookie(request)
+export const getCookieValue = (headers: Headers, key: string): string | null | undefined => {
+  const cookie = getCookie(headers)
   return cookie[key]
 }
 

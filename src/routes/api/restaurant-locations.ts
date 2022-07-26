@@ -20,8 +20,5 @@ export const RESTAURANT_LOCATIONS: RestaurantLocation[] = [
 
 
 export const onGet: EndpointHandler<RestaurantLocation[]> = async () => {
-  return {
-    status: 200,
-    body: RESTAURANT_LOCATIONS
-  }
+  return RESTAURANT_LOCATIONS
 }

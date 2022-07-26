@@ -12,7 +12,7 @@ export interface PageContent {
 }
 
 export default component$(() => {
-  const contentResource = useEndpoint<PageContent>();
+  const contentResource = useEndpoint<typeof onGet>();
   return (
     <Host>
       <Resource
@@ -30,19 +30,16 @@ export default component$(() => {
 });
 
 export const onGet: EndpointHandler<PageContent> = async (event) => {
-  const order_location = await getUserLocation(event.request);
+  const order_location = await getUserLocation(event.request.url, event.request.headers);
   if (!order_location) {
-    return { status: 307, redirect: "/find-a-restaurant" };
+    return event.response.redirect("/find-a-restaurant", 307);
   }
   const origin = event.url.origin;
   const restaurant_menu = await getRestaurantMenu(origin);
   const categories = getCategoriesList(restaurant_menu);
   return {
-    status: 200,
-    body: {
-      categories,
-      items: restaurant_menu,
-      order_location: order_location
-    },
+    categories,
+    items: restaurant_menu,
+    order_location: order_location
   };
 };

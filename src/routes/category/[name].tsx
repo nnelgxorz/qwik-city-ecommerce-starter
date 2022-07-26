@@ -10,7 +10,7 @@ export interface PageContent {
 }
 
 export default component$(() => {
-  const contentResource = useEndpoint<PageContent>();
+  const contentResource = useEndpoint<typeof onGet>();
   return <Host>
     <Resource
       resource={contentResource}
@@ -34,8 +34,5 @@ export const onGet: EndpointHandler<PageContent> = async (event) => {
     .then(restaurant_menu => restaurant_menu.filter(({ categories }) => {
       return categories.findIndex(c => c.toLowerCase() === name) >= 0
     }));
-  return {
-    status: 200,
-    body: { name, items }
-  }
+  return { name, items }
 }

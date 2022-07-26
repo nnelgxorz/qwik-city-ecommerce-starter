@@ -63,10 +63,10 @@ export default component$(() => {
 export const onGet: EndpointHandler<PageContent> = async (event) => {
   const origin = event.url.origin;
   const restaurant_locations = await getAllLocations(origin);
-  return { status: 200, body: { restaurant_locations } };
+  return { restaurant_locations };
 };
 
-export const onPost: EndpointHandler = async ({ request, url }) => {
+export const onPost: EndpointHandler<void> = async ({ request, url, response }) => {
   const formData = await request.formData();
   const restaurant_id = formData.get(RESTAURANT_ID_FIELD)?.toString();
   const origin = url.origin;
@@ -74,18 +74,13 @@ export const onPost: EndpointHandler = async ({ request, url }) => {
     .then(restaurants => restaurants.find(({ id }) => id === restaurant_id))
     ;
   if (!restaurant_id || !restaurant) {
-    return {
-      status: 404
-    }
+    response.status = 404;
+    return
   }
-  return {
-    status: 301,
-    redirect: '/order-online',
-    headers: {
-      ...setCookie(RESTAURANT_LOCATION_COOKIE, restaurant_id, {
-        httpOnly: true,
-        secure: true
-      })
-    }
-  }
+  const cookie = setCookie(RESTAURANT_LOCATION_COOKIE, restaurant_id, {
+    httpOnly: true,
+    secure: true
+  })
+  response.headers.set("Set-Cookie", cookie["Set-Cookie"])
+  return response.redirect('/order-online', 301);
 }
