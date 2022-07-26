@@ -24,17 +24,13 @@ export interface Store {
 }
 
 export default component$(() => {
-<<<<<<< HEAD
-  const contentResource = useEndpoint<typeof onGet>();
-=======
   const origin = new URL(useLocation().href).origin;
-  const contentResource = useEndpoint<PageContent>();
+  const contentResource = useEndpoint<typeof onGet>();
   const store: Store = useStore({
     state: 'idle',
     made_for: '',
     quantity: 1
   });
->>>>>>> WIP
   return (
     <Host>
       <Resource
@@ -119,15 +115,8 @@ export const onGet: EndpointHandler<PageContent> = async (event) => {
   const product = await getRestaurantMenu(origin)
     .then(restaurant_menu => restaurant_menu.find((item) => item.id === id));
   if (!product) {
-<<<<<<< HEAD
     event.response.status = 404;
     return { product: null, order_location };
-=======
-    return {
-      status: 404,
-      body: { product: null, order_location },
-    };
->>>>>>> WIP
   }
   return { product, order_location };
 };
