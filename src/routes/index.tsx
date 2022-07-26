@@ -10,7 +10,7 @@ export interface PageContent {
 }
 
 export default component$(() => {
-  const menu = useEndpoint<PageContent>();
+  const menu = useEndpoint<typeof onGet>();
   return (
     <Host>
       <h2>Welcome to Qwik City Soup &amp; Subs</h2>
@@ -33,10 +33,7 @@ export const onGet: EndpointHandler<PageContent> = async (event) => {
   const restaurant_menu: MenuItem[] = await getRestaurantMenu(origin);
   const categories = getCategoriesList(restaurant_menu);
   return {
-    status: 200,
-    body: {
-      categories: [...new Set(categories)],
-      items: restaurant_menu,
-    },
+    categories: [...new Set(categories)],
+    items: restaurant_menu,
   };
 };

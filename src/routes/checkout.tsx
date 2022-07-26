@@ -9,7 +9,7 @@ export interface PageContent {
 }
 
 export default component$(() => {
-  const contentResource = useEndpoint<PageContent>();
+  const contentResource = useEndpoint<typeof onGet>();
   return (
     <Host>
       <Resource
@@ -59,14 +59,9 @@ export default component$(() => {
 });
 
 export const onGet: EndpointHandler<PageContent> = async (event) => {
-  const order_location = await getUserLocation(event.request);
+  const order_location = await getUserLocation(event.request.url, event.request.headers);
   if (!order_location) {
-    return { status: 301, redirect: '/find-a-restaurant' }
+    return event.response.redirect('/find-a-restaurant', 301);
   }
-  return {
-    status: 200,
-    body: {
-      order_location
-    }
-  }
+  return { order_location }
 }

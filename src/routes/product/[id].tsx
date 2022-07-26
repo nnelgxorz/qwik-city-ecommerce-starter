@@ -14,7 +14,7 @@ export interface PageContent {
 }
 
 export default component$(() => {
-  const contentResource = useEndpoint<{ product: MenuItem | null, order_location: RestaurantLocation }>();
+  const contentResource = useEndpoint<typeof onGet>();
   return (
     <Host>
       <Resource
@@ -65,24 +65,19 @@ export default component$(() => {
   );
 });
 
-export const onGet: EndpointHandler = async (event) => {
-  const order_location = await getUserLocation(event.request);
+export const onGet: EndpointHandler<PageContent> = async (event) => {
+  const order_location = await getUserLocation(event.request.url, event.request.headers);
   if (!order_location) {
-    return { status: 307, headers: { location: "/find-a-restaurant" } };
+    return event.response.redirect("/find-a-restaurant", 307);
   }
   const { id } = event.params;
   const origin = event.url.origin;
   const product = await getRestaurantMenu(origin).then(restaurant_menu => restaurant_menu.find((item) => item.id === id));
   if (!product) {
-    return {
-      status: 404,
-      body: null,
-    };
+    event.response.status = 404;
+    return { product: null, order_location };
   }
-  return {
-    status: 200,
-    body: { product, order_location },
-  };
+  return { product, order_location };
 };
 
 export const onPost = () => {

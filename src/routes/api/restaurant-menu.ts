@@ -2,10 +2,7 @@ import { EndpointHandler } from "@builder.io/qwik-city";
 import { MenuItem } from "../../types";
 
 export const onGet: EndpointHandler<MenuItem[]> = async () => {
-  return {
-    status: 200,
-    body: RESTARAUNT_MENU
-  };
+  return RESTARAUNT_MENU
 }
 
 export const RESTARAUNT_MENU: MenuItem[] = [
