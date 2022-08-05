@@ -19,8 +19,9 @@ export const getUserLocation = async (
 export const getRestaurantMenu = async (
   origin: string
 ): Promise<MenuItem[]> => {
-  return await fetch(new URL("/api/restaurant-menu", origin).href)
-    .then((response) => response.json()) as MenuItem[];
+  return (await fetch(new URL("/api/restaurant-menu", origin).href).then(
+    (response) => response.json()
+  )) as MenuItem[];
 };
 
 export const getAllLocations = async (
@@ -95,7 +96,8 @@ const stringifyCookieOpts = (opts: CookieOpts) => {
   }
   if (opts.domain) {
     attributes.push(
-      `Domain=${typeof opts.domain === "string" ? opts.domain : opts.domain.href
+      `Domain=${
+        typeof opts.domain === "string" ? opts.domain : opts.domain.href
       }`
     );
   }
@@ -121,7 +123,8 @@ export const setCookie = (
   return { "Set-Cookie": [`${key}=${value}`, ...attributes].join("; ") };
 };
 
-export const artificial_delay = () => new Promise(resolve => {
-  const time = Math.random() * 2000
-  setTimeout(resolve, time)
-})
+export const artificial_delay = () =>
+  new Promise((resolve) => {
+    const time = Math.random() * 2000;
+    setTimeout(resolve, time);
+  });

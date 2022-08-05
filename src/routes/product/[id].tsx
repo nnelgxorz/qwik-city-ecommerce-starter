@@ -65,11 +65,13 @@ export default component$(() => {
   );
 });
 
-export const onGet: EndpointHandler<PageContent> = async ({ params, url, request, response }) => {
-  const order_location = await getUserLocation(
-    request.url,
-    request.headers
-  );
+export const onGet: EndpointHandler<PageContent> = async ({
+  params,
+  url,
+  request,
+  response,
+}) => {
+  const order_location = await getUserLocation(request.url, request.headers);
   if (!order_location) {
     return response.redirect("/find-a-restaurant", 307);
   }
@@ -79,7 +81,7 @@ export const onGet: EndpointHandler<PageContent> = async ({ params, url, request
     restaurant_menu.find((item) => item.id === id)
   );
   if (!product) {
-    return response.status = 404;
+    return (response.status = 404);
   }
   return { product, order_location };
 };

@@ -19,11 +19,13 @@ export const RESTAURANT_LOCATIONS: RestaurantLocation[] = [
   createLocation("Proxytown", "789"),
 ];
 
-export const onGet: EndpointHandler<RestaurantLocation[]> = async ({ request }) => {
+export const onGet: EndpointHandler<RestaurantLocation[]> = async ({
+  request,
+}) => {
   await artificial_delay();
-  const search_id = new URL(request.url).searchParams.get('id');
+  const search_id = new URL(request.url).searchParams.get("id");
   if (search_id) {
-    return RESTAURANT_LOCATIONS.filter(({ id }) => id === search_id)
+    return RESTAURANT_LOCATIONS.filter(({ id }) => id === search_id);
   }
   return RESTAURANT_LOCATIONS;
 };

@@ -4,7 +4,7 @@ import { artificial_delay } from "../../utils";
 
 export const onGet: EndpointHandler<MenuItem[]> = async ({ request }) => {
   await artificial_delay();
-  const item_id = new URL(request.url).searchParams.get('item');
+  const item_id = new URL(request.url).searchParams.get("item");
   if (item_id) {
     return RESTARAUNT_MENU.filter(({ id }) => id === item_id);
   }
