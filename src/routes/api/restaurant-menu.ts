@@ -1,9 +1,15 @@
 import { EndpointHandler } from "@builder.io/qwik-city";
-import { MenuItem } from "../../types";
+import type { MenuItem } from "../../types";
+import { artificial_delay } from "../../utils";
 
-export const onGet: EndpointHandler<MenuItem[]> = async () => {
-  return RESTARAUNT_MENU
-}
+export const onGet: EndpointHandler<MenuItem[]> = async ({ request }) => {
+  await artificial_delay();
+  const item_id = new URL(request.url).searchParams.get("item");
+  if (item_id) {
+    return RESTARAUNT_MENU.filter(({ id }) => id === item_id);
+  }
+  return RESTARAUNT_MENU;
+};
 
 export const RESTARAUNT_MENU: MenuItem[] = [
   {

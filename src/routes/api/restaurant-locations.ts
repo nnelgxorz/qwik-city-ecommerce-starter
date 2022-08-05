@@ -1,5 +1,6 @@
 import { EndpointHandler } from "@builder.io/qwik-city";
-import { RestaurantLocation } from "../../types";
+import type { RestaurantLocation } from "../../types";
+import { artificial_delay } from "../../utils";
 
 const createLocation = (name: string, id: string): RestaurantLocation => {
   return {
@@ -18,7 +19,13 @@ export const RESTAURANT_LOCATIONS: RestaurantLocation[] = [
   createLocation("Proxytown", "789"),
 ];
 
-
-export const onGet: EndpointHandler<RestaurantLocation[]> = async () => {
-  return RESTAURANT_LOCATIONS
-}
+export const onGet: EndpointHandler<RestaurantLocation[]> = async ({
+  request,
+}) => {
+  await artificial_delay();
+  const search_id = new URL(request.url).searchParams.get("id");
+  if (search_id) {
+    return RESTAURANT_LOCATIONS.filter(({ id }) => id === search_id);
+  }
+  return RESTAURANT_LOCATIONS;
+};

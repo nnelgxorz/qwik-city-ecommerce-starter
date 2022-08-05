@@ -6,11 +6,11 @@ import {
 } from "@builder.io/qwik-city";
 import { CurrentLocation } from "../../components/current-location";
 import { getRestaurantMenu, getUserLocation } from "../../utils";
-import { MenuItem, RestaurantLocation } from "../../types";
+import type { MenuItem, RestaurantLocation } from "../../types";
 
 export interface PageContent {
-  product: MenuItem | null,
-  order_location: RestaurantLocation
+  product: MenuItem;
+  order_location: RestaurantLocation;
 }
 
 export default component$(() => {
@@ -19,7 +19,7 @@ export default component$(() => {
     <Host>
       <Resource
         resource={contentResource}
-        onResolved={content => (
+        onResolved={(content) => (
           <>
             <header>
               <h2>{content.product?.name || "Not Found"}</h2>
@@ -65,24 +65,30 @@ export default component$(() => {
   );
 });
 
-export const onGet: EndpointHandler<PageContent> = async (event) => {
-  const order_location = await getUserLocation(event.request.url, event.request.headers);
+export const onGet: EndpointHandler<PageContent> = async ({
+  params,
+  url,
+  request,
+  response,
+}) => {
+  const order_location = await getUserLocation(request.url, request.headers);
   if (!order_location) {
-    return event.response.redirect("/find-a-restaurant", 307);
+    return response.redirect("/find-a-restaurant", 307);
   }
-  const { id } = event.params;
-  const origin = event.url.origin;
-  const product = await getRestaurantMenu(origin).then(restaurant_menu => restaurant_menu.find((item) => item.id === id));
+  const { id } = params;
+  const origin = url.origin;
+  const product = await getRestaurantMenu(origin).then((restaurant_menu) =>
+    restaurant_menu.find((item) => item.id === id)
+  );
   if (!product) {
-    event.response.status = 404;
-    return { product: null, order_location };
+    return (response.status = 404);
   }
   return { product, order_location };
 };
 
 export const onPost = () => {
-  return { status: 301, redirect: '/checkout' }
-}
+  return { status: 301, redirect: "/checkout" };
+};
 
 export const head: DocumentHead<PageContent> = ({ data }) => {
   if (!data?.product) {

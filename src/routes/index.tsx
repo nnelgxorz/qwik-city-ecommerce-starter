@@ -5,8 +5,8 @@ import { Category, MenuItem } from "../types";
 import { getCategoriesList, getRestaurantMenu } from "../utils";
 
 export interface PageContent {
-  categories: Category[]
-  items: MenuItem[]
+  categories: Category[];
+  items: MenuItem[];
 }
 
 export default component$(() => {
