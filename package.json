@@ -17,8 +17,8 @@
     "typecheck": "tsc --incremental --noEmit"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^0.0.39",
-    "@builder.io/qwik-city": "^0.0.26",
+    "@builder.io/qwik": "^0.0.39-dev20220805031634",
+    "@builder.io/qwik-city": "^0.0.30",
     "@netlify/vite-plugin-netlify-edge": "1.1.0",
     "@types/eslint": "8.4.5",
     "@types/node": "latest",
@@ -33,7 +33,7 @@
     "vite-tsconfig-paths": "3.5.0"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=16"
   },
   "homepage": "https://qwik.builder.io/",
   "license": "",

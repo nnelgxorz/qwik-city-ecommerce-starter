@@ -5,10 +5,10 @@ import { RestaurantLocation } from "../types";
 import { setCookie } from "../utils";
 
 export interface PageContent {
-  restaurant_locations: RestaurantLocation[]
+  restaurant_locations: RestaurantLocation[];
 }
 
-export const RESTAURANT_ID_FIELD = 'restaurant-location';
+export const RESTAURANT_ID_FIELD = "restaurant-location";
 
 export const RestaurantLocationCard = component$(
   (props: { location: RestaurantLocation }) => {
@@ -41,7 +41,7 @@ export const RestaurantLocationCard = component$(
 );
 
 export default component$(() => {
-  const resource = useEndpoint<PageContent>();
+  const resource = useEndpoint<typeof onGet>();
   return (
     <Host>
       <h2>Select A Location</h2>
@@ -66,21 +66,25 @@ export const onGet: EndpointHandler<PageContent> = async (event) => {
   return { restaurant_locations };
 };
 
-export const onPost: EndpointHandler<void> = async ({ request, url, response }) => {
+export const onPost: EndpointHandler<void> = async ({
+  request,
+  url,
+  response,
+}) => {
   const formData = await request.formData();
   const restaurant_id = formData.get(RESTAURANT_ID_FIELD)?.toString();
   const origin = url.origin;
-  const restaurant = await getAllLocations(origin)
-    .then(restaurants => restaurants.find(({ id }) => id === restaurant_id))
-    ;
+  const restaurant = await getAllLocations(origin).then((restaurants) =>
+    restaurants.find(({ id }) => id === restaurant_id)
+  );
   if (!restaurant_id || !restaurant) {
     response.status = 404;
-    return
+    return;
   }
   const cookie = setCookie(RESTAURANT_LOCATION_COOKIE, restaurant_id, {
     httpOnly: true,
-    secure: true
-  })
-  response.headers.set("Set-Cookie", cookie["Set-Cookie"])
-  return response.redirect('/order-online', 301);
-}
+    secure: true,
+  });
+  response.headers.set("Set-Cookie", cookie["Set-Cookie"]);
+  return response.redirect("/order-online", 301);
+};

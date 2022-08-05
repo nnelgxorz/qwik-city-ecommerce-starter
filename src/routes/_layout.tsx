@@ -1,4 +1,4 @@
-import { component$, Host, Slot } from "@builder.io/qwik";
+import { component$, Host, Slot, useDocument } from "@builder.io/qwik";
 import Footer from "../components/footer/footer";
 import Header from "../components/header/header";
 
