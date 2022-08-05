@@ -1,27 +1,6 @@
-import { render } from "./entry.ssr";
+import render from './entry.ssr';
+import { qwikCity } from '@builder.io/qwik-city/middleware/netlify-edge';
 
-const handler = async (request: Request) => {
-  try {
-    // Handle static files
-    if (/\.\w+$/.test(request.url)) {
-      return;
-    }
+const qwikCityHandler = qwikCity(render);
 
-    const ssrResult = await render({
-      url: request.url,
-      base: "/build/",
-    });
-
-    const response = new Response(ssrResult.html, {
-      headers: {
-        "Content-Type": "text/html; charset=utf-8",
-      },
-    });
-    return response;
-  } catch (e) {
-    // 500 Error
-    return new Response(String(e), { status: 500 });
-  }
-};
-
-export default handler;
+export default qwikCityHandler;
